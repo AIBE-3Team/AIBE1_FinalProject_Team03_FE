@@ -24,5 +24,6 @@ export const loginUser = async (data) => {
 };
 
 export const socialLoginUser = (provider) => {
+    // 소셜 로그인은 해당 URL로 리다이렉트
     window.location.href = `${BASE_URL}/oauth2/authorization/${provider}`;
 };
