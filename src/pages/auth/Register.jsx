@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Eye, EyeOff, Mail, User, Phone, MapPin, UserPlus, Upload, X } from 'lucide-react';
-import { registerUser } from '../../services/auth';
+import { Eye, EyeOff, Mail, User, Lock, Phone, MapPin, UserPlus, Upload, X } from 'lucide-react';
 
 export default function TicketMonSignup() {
     const [formData, setFormData] = useState({
@@ -116,8 +115,32 @@ export default function TicketMonSignup() {
         return error;
     };
 
+    // 전화번호 포맷팅 함수
+    const formatPhoneNumber = (value) => {
+        // 숫자만 추출
+        const numbers = value.replace(/[^\d]/g, '');
+
+        // 길이에 따라 포맷팅
+        if (numbers.length <= 3) {
+            return numbers;
+        } else if (numbers.length <= 7) {
+            return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+        } else if (numbers.length <= 11) {
+            return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7)}`;
+        } else {
+            // 11자리 초과시 11자리까지만 사용
+            return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+        }
+    };
+
     const handleInputChange = (field) => (e) => {
-        const value = e.target.value;
+        let value = e.target.value;
+
+        // 전화번호 필드인 경우 포맷팅 적용
+        if (field === 'phoneNumber') {
+            value = formatPhoneNumber(value);
+        }
+
         setFormData((prev) => ({
             ...prev,
             [field]: value,
@@ -181,15 +204,15 @@ export default function TicketMonSignup() {
 
         try {
             console.log('회원가입 시도:', formData);
-            const result = await registerUser(formData);
-            console.log('result : ', result);
+            // const result = await registerUser(formData);
+            // console.log('result : ', result);
 
-            if (!result.isSuccess) {
-                setErrorMessage(`회원가입이 실패되었습니다! ${result.message}`);
-            } else {
-                alert('회원가입이 완료되었습니다!');
-                // 성공 시 폼 초기화 또는 페이지 이동 등의 로직 추가 가능
-            }
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+
+            // Simulate success
+            alert('회원가입이 완료되었습니다!');
+            // 성공 시 폼 초기화 또는 페이지 이동 등의 로직 추가 가능
         } catch (error) {
             setErrorMessage('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         } finally {
@@ -252,10 +275,10 @@ export default function TicketMonSignup() {
                     </div>
 
                     {/* Signup Form */}
-                    <div className="space-y-4">
+                    <div className="space-y-4 text-left">
                         {/* Email */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">이메일 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">이메일 *</label>
                             <div className="relative">
                                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
@@ -263,43 +286,48 @@ export default function TicketMonSignup() {
                                     value={formData.email}
                                     onChange={handleInputChange('email')}
                                     placeholder="이메일을 입력하세요"
-                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.email ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
                             </div>
-                            {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
+                            {errors.email && <p className="text-red-400 text-xs mt-1 text-left">{errors.email}</p>}
                         </div>
 
                         {/* ID */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">아이디 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">아이디 *</label>
                             <div className="relative">
-                                {/* <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" /> */}
+                                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
                                     type="text"
                                     value={formData.username}
                                     onChange={handleInputChange('username')}
-                                    placeholder="아이디를 선택하세요"
-                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    placeholder="아이디를 입력하세요"
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.id ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
                             </div>
-                            <p className="text-gray-500 text-xs mt-1">영문 소문자, 숫자만 사용 가능 (4-20자)</p>
-                            {errors.username && <p className="text-red-400 text-xs mt-1">{errors.username}</p>}
+                            <p className="text-gray-500 text-xs mt-1 text-left">
+                                영문 소문자, 숫자만 사용 가능 (4-20자)
+                            </p>
+                            {errors.username && (
+                                <p className="text-red-400 text-xs mt-1 text-left">{errors.username}</p>
+                            )}
                         </div>
 
                         {/* Password */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">비밀번호 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">비밀번호 *</label>
                             <div className="relative">
+                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={formData.password}
                                     onChange={handleInputChange('password')}
-                                    placeholder="비밀번호를 만드세요"
-                                    className={`w-full pl-4 pr-12 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    placeholder="비밀번호를 입력하세요"
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.password ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
@@ -311,20 +339,27 @@ export default function TicketMonSignup() {
                                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                 </button>
                             </div>
-                            <p className="text-gray-500 text-xs mt-1">최소 8자 이상, 소문자, 숫자, 특수문자 포함</p>
-                            {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password}</p>}
+                            <p className="text-gray-500 text-xs mt-1 text-left">
+                                최소 8자 이상, 소문자, 숫자, 특수문자 포함
+                            </p>
+                            {errors.password && (
+                                <p className="text-red-400 text-xs mt-1 text-left">{errors.password}</p>
+                            )}
                         </div>
 
                         {/* Confirm Password */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">비밀번호 확인 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">
+                                비밀번호 확인 *
+                            </label>
                             <div className="relative">
+                                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     value={formData.confirmPassword}
                                     onChange={handleInputChange('confirmPassword')}
                                     placeholder="비밀번호를 다시 입력하세요"
-                                    className={`w-full pl-4 pr-12 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.confirmPassword ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
@@ -337,50 +372,52 @@ export default function TicketMonSignup() {
                                 </button>
                             </div>
                             {errors.confirmPassword && (
-                                <p className="text-red-400 text-xs mt-1">{errors.confirmPassword}</p>
+                                <p className="text-red-400 text-xs mt-1 text-left">{errors.confirmPassword}</p>
                             )}
                         </div>
 
-                        {/* Full Name */}
+                        {/* Name */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">이름 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">이름 *</label>
                             <div className="relative">
-                                <UserPlus className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
                                     type="text"
                                     value={formData.name}
                                     onChange={handleInputChange('name')}
                                     placeholder="이름을 입력하세요"
-                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.fullName ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
                             </div>
-                            {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name}</p>}
+                            {errors.name && <p className="text-red-400 text-xs mt-1 text-left">{errors.name}</p>}
                         </div>
 
                         {/* Nickname */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">닉네임 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">닉네임 *</label>
                             <div className="relative">
-                                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                <UserPlus className="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
                                     type="text"
                                     value={formData.nickname}
                                     onChange={handleInputChange('nickname')}
                                     placeholder="닉네임을 입력하세요"
-                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.nickname ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
                             </div>
-                            <p className="text-gray-500 text-xs mt-1">20자 이내로 입력해주세요</p>
-                            {errors.nickname && <p className="text-red-400 text-xs mt-1">{errors.nickname}</p>}
+                            <p className="text-gray-500 text-xs mt-1 text-left">20자 이내로 입력해주세요</p>
+                            {errors.nickname && (
+                                <p className="text-red-400 text-xs mt-1 text-left">{errors.nickname}</p>
+                            )}
                         </div>
 
                         {/* Phone Number */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">전화번호 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">전화번호 *</label>
                             <div className="relative">
                                 <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
@@ -388,20 +425,22 @@ export default function TicketMonSignup() {
                                     value={formData.phoneNumber}
                                     onChange={handleInputChange('phoneNumber')}
                                     placeholder="010-1234-5678"
-                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.phoneNumber ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
                             </div>
-                            <p className="text-gray-500 text-xs mt-1">
+                            <p className="text-gray-500 text-xs mt-1 text-left">
                                 휴대폰 번호 형식으로 입력해주세요 (예: 010-1234-5678)
                             </p>
-                            {errors.phoneNumber && <p className="text-red-400 text-xs mt-1">{errors.phoneNumber}</p>}
+                            {errors.phoneNumber && (
+                                <p className="text-red-400 text-xs mt-1 text-left">{errors.phoneNumber}</p>
+                            )}
                         </div>
 
                         {/* Address */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">주소 *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">주소 *</label>
                             <div className="relative">
                                 <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                 <input
@@ -409,17 +448,19 @@ export default function TicketMonSignup() {
                                     value={formData.address}
                                     onChange={handleInputChange('address')}
                                     placeholder="주소를 입력하세요"
-                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    className={`w-full pl-10 pr-4 py-3 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-left ${
                                         errors.address ? 'border-red-500' : 'border-gray-700'
                                     }`}
                                 />
                             </div>
-                            {errors.address && <p className="text-red-400 text-xs mt-1">{errors.address}</p>}
+                            {errors.address && <p className="text-red-400 text-xs mt-1 text-left">{errors.address}</p>}
                         </div>
 
                         {/* Profile Image */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">프로필 이미지</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">
+                                프로필 이미지
+                            </label>
                             <div className="flex items-center space-x-4">
                                 <div className="w-16 h-16 bg-orange-300 rounded-full flex items-center justify-center overflow-hidden">
                                     {profileImage ? (
@@ -450,7 +491,7 @@ export default function TicketMonSignup() {
                                 onChange={(e) => setAgreeTerms(e.target.checked)}
                                 className="mt-1 w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
                             />
-                            <label htmlFor="terms" className="text-sm text-gray-400">
+                            <label htmlFor="terms" className="text-sm text-gray-400 text-left">
                                 <span className="text-blue-400 hover:text-blue-300 cursor-pointer">이용약관</span>과{' '}
                                 <span className="text-blue-400 hover:text-blue-300 cursor-pointer">
                                     개인정보처리방침
