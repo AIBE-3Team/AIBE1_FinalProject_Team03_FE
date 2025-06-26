@@ -40,16 +40,14 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         const logoutUrl = `${import.meta.env.VITE_APP_API_URL.replace('/api', '')}/auth/logout`;
         try {
-            const response = await fetch(logoutUrl, {
+            await fetch(logoutUrl, {
                 method: 'POST',
                 credentials: 'include',
             });
-
-            if (response.status == 200) {
-                setUser(null);
-            }
         } catch {
             console.warn('로그아웃 요청 실패');
+        } finally {
+            setUser(null);
         }
     };
 
