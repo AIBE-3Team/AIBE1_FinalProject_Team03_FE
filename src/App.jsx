@@ -37,7 +37,11 @@ function App() {
                             로그인
                         </Link>
                     </li>
-                    {/* <li><Link to="/register" style={{ color: '#fff', textDecoration: 'none' }}>회원가입</Link></li> */}
+                    <li>
+                        <Link to="/auth/register" style={{ color: '#fff', textDecoration: 'none' }}>
+                            회원가입
+                        </Link>
+                    </li>
                     <li>
                         <Link to="/seller-status" style={{ color: '#fff', textDecoration: 'none' }}>
                             판매자 상태
