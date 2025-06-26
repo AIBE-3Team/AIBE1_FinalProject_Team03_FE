@@ -57,7 +57,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<HomePage />} /> {/* 홈 경로 */}
                     <Route path="/seller-status" element={<SellerStatusPage />} /> {/* 판매자 상태 페이지 */}
-                    <Route path="/auth/Login" element={<TicketMonLogin />} /> {/* 로그인 페이지 */}
+                    <Route path="/auth/login" element={<TicketMonLogin />} /> {/* 로그인 페이지 */}
                     <Route path="/auth/register" element={<TicketMonSignup />} /> {/* 회원가입 페이지 */}
                     {/* 구현되지 않은 페이지 라우트는 임시로 주석 처리합니다. */}
                     {/* <Route path="/concerts" element={<ConcertsPage />} /> */}
