@@ -5,7 +5,7 @@ import { validateField, validateAllFields, formatPhoneNumber, registerUser } fro
 import SignupInput from '../../features/auth/components/RegisterForm';
 import { registerInputType } from '../../features/auth/types/registerInputType';
 
-export default function TicketMonSignup() {
+export default function Register() {
     const [formData, setFormData] = useState({
         email: '',
         username: '',
@@ -13,7 +13,7 @@ export default function TicketMonSignup() {
         confirmPassword: '',
         name: '',
         nickname: '',
-        phoneNumber: '',
+        phone: '',
         address: '',
     });
 
@@ -93,13 +93,13 @@ export default function TicketMonSignup() {
 
         try {
             const result = await registerUser(formData);
-            if (result.data) {
+            if (result.success) {
                 navigate('/auth/login');
             } else {
-                setErrorMessage(result.message);
+                setErrorMessage(result.error);
             }
         } catch (error) {
-            setErrorMessage(error);
+            setErrorMessage(error || '회원가입 중 오류가 발생했습니다.');
         } finally {
             setIsLoading(false);
         }
@@ -117,7 +117,9 @@ export default function TicketMonSignup() {
                     <div className="w-6 h-6 bg-blue-500 rounded"></div>
                     <span className="text-white text-lg font-semibold">TicketMon</span>
                 </div>
-                <button className="text-gray-300 hover:text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">홈</button>
+                <button className="text-gray-300 hover:text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    홈
+                </button>
             </header>
 
             {/* Error Message Banner */}
@@ -138,7 +140,10 @@ export default function TicketMonSignup() {
                                 <p className="text-sm font-medium">{errorMessage}</p>
                             </div>
                         </div>
-                        <button onClick={closeErrorMessage} className="flex-shrink-0 ml-4 p-1 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
+                        <button
+                            onClick={closeErrorMessage}
+                            className="flex-shrink-0 ml-4 p-1 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors"
+                        >
                             <X className="w-4 h-4" />
                         </button>
                     </div>
@@ -167,8 +172,16 @@ export default function TicketMonSignup() {
                             error={errors[name]}
                             onChange={handleInputChange(name)}
                             showToggle={toggle}
-                            showValue={name === 'password' ? showPassword : name === 'confirmPassword' ? showConfirmPassword : false}
-                            onToggle={() => (name === 'password' ? setShowPassword((prev) => !prev) : name === 'confirmPassword' ? setShowConfirmPassword((prev) => !prev) : null)}
+                            showValue={
+                                name === 'password' ? showPassword : name === 'confirmPassword' ? showConfirmPassword : false
+                            }
+                            onToggle={() =>
+                                name === 'password'
+                                    ? setShowPassword((prev) => !prev)
+                                    : name === 'confirmPassword'
+                                    ? setShowConfirmPassword((prev) => !prev)
+                                    : null
+                            }
                         />
                     ))}
 
@@ -176,7 +189,13 @@ export default function TicketMonSignup() {
                     <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2 text-left">프로필 이미지</label>
                         <div className="flex items-center space-x-4">
-                            <div className="w-16 h-16 bg-orange-300 rounded-full flex items-center justify-center overflow-hidden">{profileImage ? <img src={profileImage} alt="Profile" className="w-full h-full object-cover" /> : <User className="w-8 h-8 text-orange-600" />}</div>
+                            <div className="w-16 h-16 bg-orange-300 rounded-full flex items-center justify-center overflow-hidden">
+                                {profileImage ? (
+                                    <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                                ) : (
+                                    <User className="w-8 h-8 text-orange-600" />
+                                )}
+                            </div>
                             <label className="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg cursor-pointer transition-colors">
                                 <Upload className="w-4 h-4 text-gray-300" />
                                 <span className="text-gray-300 text-sm">파일 업로드</span>
@@ -187,9 +206,17 @@ export default function TicketMonSignup() {
 
                     {/* Terms Agreement */}
                     <div className="flex items-start space-x-3">
-                        <input type="checkbox" id="terms" checked={agreeTerms} onChange={(e) => setAgreeTerms(e.target.checked)} className="mt-1 w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2" />
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            checked={agreeTerms}
+                            onChange={(e) => setAgreeTerms(e.target.checked)}
+                            className="mt-1 w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
+                        />
                         <label htmlFor="terms" className="text-sm text-gray-400 text-left">
-                            <span className="text-blue-400 hover:text-blue-300 cursor-pointer">이용약관</span>과 <span className="text-blue-400 hover:text-blue-300 cursor-pointer">개인정보처리방침</span>에 동의합니다
+                            <span className="text-blue-400 hover:text-blue-300 cursor-pointer">이용약관</span>과{' '}
+                            <span className="text-blue-400 hover:text-blue-300 cursor-pointer">개인정보처리방침</span>에
+                            동의합니다
                         </label>
                     </div>
 
@@ -206,7 +233,10 @@ export default function TicketMonSignup() {
                     <div className="text-center">
                         <p className="text-gray-400 text-sm">
                             이미 계정이 있으신가요?{' '}
-                            <button onClick={() => navigate('/auth/login')} className="text-blue-400 hover:text-blue-300 underline transition-colors">
+                            <button
+                                onClick={() => navigate('/auth/login')}
+                                className="text-blue-400 hover:text-blue-300 underline transition-colors"
+                            >
                                 로그인
                             </button>
                         </p>

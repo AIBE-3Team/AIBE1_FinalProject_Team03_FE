@@ -16,10 +16,13 @@ export default function SignupInput({
 }) {
     return (
         <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2 text-left">{placeholder} *</label>
+            <label htmlFor="{name}" className="block text-sm font-medium text-gray-300 mb-2 text-left">
+                {placeholder} *
+            </label>
             <div className="relative">
                 <Icon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
+                    id={name}
                     type={showToggle && showValue ? 'text' : type}
                     name={name}
                     value={value}

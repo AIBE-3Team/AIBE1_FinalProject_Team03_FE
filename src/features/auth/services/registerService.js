@@ -1,7 +1,5 @@
 import apiClient from '../../../shared/utils/apiClient'; // 공통 apiClient 임포트
 
-const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
-
 // 1. 정규식과 메시지 상수화
 const REGEX = {
     email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -12,7 +10,7 @@ const REGEX = {
 
 const MESSAGES = {
     required: (label) => `${label}은(는) 필수입니다.`,
-    email: '이메일은 영어 소문자와 숫자만 사용 가능합니다.',
+    email: '올바른 이메일 형식이 아닙니다.',
     usernameLength: '아이디는 4자 이상 20자 이하로 입력해주세요.',
     username: '아이디는 영어 소문자와 숫자만 사용 가능합니다.',
     password: '비밀번호는 최소 8자 이상이며, 소문자, 숫자, 특수문자를 포함해야 합니다.',
@@ -87,8 +85,11 @@ export const formatPhoneNumber = (value) => {
 export const registerUser = async (data) => {
     try {
         const response = await apiClient.post('/auth/register', data);
-        return response;
+        return { success: true, data: response.data };
     } catch (error) {
-        return error;
+        return {
+            success: false,
+            error: error.message || '회원가입 중 오류가 발생했습니다.',
+        };
     }
 };
