@@ -16,7 +16,7 @@ export default function SignupInput({
 }) {
     return (
         <div>
-            <label htmlFor="{name}" className="block text-sm font-medium text-gray-300 mb-2 text-left">
+            <label htmlFor={name} className="block text-sm font-medium text-gray-300 mb-2 text-left">
                 {placeholder} *
             </label>
             <div className="relative">
