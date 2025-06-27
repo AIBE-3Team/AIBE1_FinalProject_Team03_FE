@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Upload, X } from 'lucide-react';
-import { validateField, validateAllFields, formatPhoneNumber, registerUser } from '../../features/auth/services/registerService';
-import SignupInput from '../../features/auth/components/RegisterForm';
+import { registerUser } from '../../features/auth/services/registerService';
+import { AccountForm } from '../../features/auth/services/AccountForm';
+import { SignupInput } from '../../features/auth/components/RegisterForm';
 import { registerInputType } from '../../features/auth/types/registerInputType';
 
 export default function Register() {
@@ -37,7 +38,7 @@ export default function Register() {
         let value = e.target.value;
 
         if (field === 'phone') {
-            value = formatPhoneNumber(value);
+            value = AccountForm.formatPhoneNumber(value);
         }
 
         const updatedData = {
@@ -47,7 +48,7 @@ export default function Register() {
 
         setFormData(updatedData);
 
-        const error = validateField(field, value, updatedData);
+        const error = AccountForm.validateField(field, value, updatedData);
         setErrors((prev) => ({
             ...prev,
             [field]: error,
@@ -76,7 +77,7 @@ export default function Register() {
     const handleRegister = async () => {
         setErrorMessage('');
 
-        const newErrors = validateAllFields(formData);
+        const newErrors = AccountForm.validateAllFields(formData);
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length > 0) {
