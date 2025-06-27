@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Lock, Calendar, Eye, EyeOff, Camera, Phone, Mail, MapPin, Edit2, Save, X } from 'lucide-react';
+import { Camera, Edit2, Save, X } from 'lucide-react';
 import { AccountForm } from '../../auth/services/AccountForm';
 import { EditProfileForm } from '../components/ProfileForm';
 import { profileInputType } from '../types/profileInputType';
@@ -42,7 +42,10 @@ export function ProfileTab({ userInfo, onUpdateUserInfo, isLoading }) {
                 setEditInfo({ ...userInfo });
             }
         } catch (error) {
-            alert('정보 수정에 실패했습니다.');
+            console.error('Profile update failed:', error);
+            setErrors({
+                _general: error.response?.data?.message || '정보 수정에 실패했습니다. 다시 시도해주세요.',
+            });
         } finally {
             setIsSaving(false);
         }
@@ -124,31 +127,6 @@ export function ProfileTab({ userInfo, onUpdateUserInfo, isLoading }) {
 
             {/* Profile Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                        <Mail size={16} className="inline mr-2" />
-                        이메일
-                    </label>
-                    <input
-                        type="email"
-                        value={isEditing ? editInfo.email || '' : userInfo.email || ''}
-                        disabled={true}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                        <User size={16} className="inline mr-2" />
-                        아이디
-                    </label>
-                    <input
-                        type="text"
-                        value={isEditing ? editInfo.username || '' : userInfo.username || ''}
-                        disabled={true}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                </div> */}
                 {profileInputType.map(({ name, type, icon, labelName, disable }) => (
                     <EditProfileForm
                         key={name}
@@ -162,63 +140,6 @@ export function ProfileTab({ userInfo, onUpdateUserInfo, isLoading }) {
                         error={errors[name]}
                     />
                 ))}
-                {/* <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">이름</label>
-                    <input
-                        type="text"
-                        value={isEditing ? editInfo.name || '' : userInfo.name || ''}
-                        name="name"
-                        onChange={handleInputChange('name')}
-                        disabled={!isEditing}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    {errors.name && <p className="text-red-400 text-xs mt-1 text-left">{errors.name}</p>}
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">닉네임</label>
-                    <input
-                        type="text"
-                        value={isEditing ? editInfo.nickname || '' : userInfo.nickname || ''}
-                        name="nickname"
-                        onChange={handleInputChange('nickname')}
-                        disabled={!isEditing}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    {errors.nickname && <p className="text-red-400 text-xs mt-1 text-left">{errors.nickname}</p>}
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                        <Phone size={16} className="inline mr-2" />
-                        전화번호
-                    </label>
-                    <input
-                        type="tel"
-                        value={isEditing ? editInfo.phone || '' : userInfo.phone || ''}
-                        name="phone"
-                        onChange={handleInputChange('phone')}
-                        disabled={!isEditing}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    {errors.phone && <p className="text-red-400 text-xs mt-1 text-left">{errors.phone}</p>}
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                        <MapPin size={16} className="inline mr-2" />
-                        주소
-                    </label>
-                    <input
-                        type="text"
-                        value={isEditing ? editInfo.address || '' : userInfo.address || ''}
-                        name="address"
-                        onChange={handleInputChange('address')}
-                        disabled={!isEditing}
-                        className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                    {errors.address && <p className="text-red-400 text-xs mt-1 text-left">{errors.address}</p>}
-                </div> */}
             </div>
 
             {/* Save Button */}
