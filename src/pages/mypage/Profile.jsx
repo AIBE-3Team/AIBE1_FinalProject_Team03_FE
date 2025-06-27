@@ -114,21 +114,6 @@ export default function Profile() {
 
     return (
         <div className="min-h-screen bg-gray-900 text-white">
-            {/* Header */}
-            <div className="bg-gray-800 border-b border-gray-700">
-                <div className="max-w-4xl mx-auto px-4 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                                <span className="text-white font-bold text-sm">T</span>
-                            </div>
-                            <h1 className="text-xl font-bold">TicketMon</h1>
-                        </div>
-                        <button className="text-gray-300 hover:text-white transition-colors">Home</button>
-                    </div>
-                </div>
-            </div>
-
             <div className="max-w-4xl mx-auto px-4 py-8">
                 {/* Page Title */}
                 <div className="text-center mb-8">
