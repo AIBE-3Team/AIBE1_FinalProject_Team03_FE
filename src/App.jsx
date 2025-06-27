@@ -15,8 +15,11 @@ import { AuthContext } from './context/AuthContext';
 // 홈페이지 & 인증 페이지
 import HomePage from './pages/home/Home.jsx';
 import SellerStatusPage from './pages/admin/SellerStatus.jsx'; // 판매자 상태 페이지
-import TicketMonLogin from './pages/auth/Login.jsx';
-import TicketMonSignup from './pages/auth/Register.jsx';
+import LoginPage from './pages/auth/Login.jsx';
+import RegisterPage from './pages/auth/Register.jsx';
+
+// 다른 팀원들이 구현할 예정인 페이지 컴포넌트들은 임포트를 주석 처리합니다.
+// 구현이 완료되면 주석을 해제하고 해당 파일을 src/pages 폴더에 생성해주세요.
 // import MyPage from './pages/MyPage.jsx';
 // import RegisterPage from './pages/RegisterPage.jsx';
 
@@ -43,11 +46,11 @@ export default function App() {
       <Route element={<AuthLayout />}>
         <Route
           path="/login"
-          element={user ? <Navigate to="/" replace /> : <TicketMonLogin />}
+          element={user ? <Navigate to="/" replace /> : <LoginPage />}
         />
         <Route
           path="/register"
-          element={user ? <Navigate to="/" replace /> : <TicketMonSignup />}
+          element={user ? <Navigate to="/" replace /> : <RegisterPage />}
         />
       </Route>
 
