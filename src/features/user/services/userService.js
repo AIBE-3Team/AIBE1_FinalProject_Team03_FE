@@ -35,9 +35,13 @@ export const userService = {
     },
 
     getBookingHistory: async (userId) => {
-        const response = await apiClient.get('/mypage/booking', userId);
-        if (response.data) {
-            return response.data;
+        try {
+            const response = await apiClient.get('/mypage/booking', { params: { userId } });
+            if (response.data) {
+                return response.data;
+            }
+        } catch (error) {
+            throw new Error(error.message || '예매 내역을 불러오는 중 오류가 발생했습니다.');
         }
     },
 };
