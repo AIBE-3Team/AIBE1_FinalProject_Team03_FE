@@ -94,11 +94,15 @@ export function BookingsTab({ bookingHistory, isLoading, onCancelBooking }) {
                                 </div>
                                 <div>
                                     <span className="text-gray-400 block">좌석</span>
-                                    {booking.seatList.map((seat) => (
-                                        <p key={seat} className="font-medium">
-                                            {seat}
-                                        </p>
-                                    ))}
+                                    {booking.seatList && Array.isArray(booking.seatList) ? (
+                                        booking.seatList.map((seat) => (
+                                            <p key={seat} className="font-medium">
+                                                {seat}
+                                            </p>
+                                        ))
+                                    ) : (
+                                        <p className="font-medium text-gray-400">좌석 정보 없음</p>
+                                    )}
                                 </div>
                                 <div>
                                     <span className="text-gray-400 block">결제금액</span>
