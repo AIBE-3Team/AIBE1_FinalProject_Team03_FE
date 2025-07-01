@@ -1,7 +1,7 @@
 import { CreditCard } from 'lucide-react';
 import { formatDateTime, formatPrice } from '../../services/bookingDetailService';
 
-export function PaymentSection({ bookedAt, totalAmount }) {
+export function PaymentSection({ bookedAt, totalAmount, paymentStatus, paymentMethod }) {
     return (
         <div className="bg-gray-800 rounded-3xl p-8 shadow-lg">
             <h3 className="text-2xl font-bold mb-6 flex items-center text-white">
@@ -14,11 +14,11 @@ export function PaymentSection({ bookedAt, totalAmount }) {
                 <div className="md:col-span-2 space-y-4">
                     <div className="flex justify-between items-center py-2">
                         <span className="text-gray-400">결제 상태</span>
-                        <span className="font-semibold text-green-400">결제 완료</span>
+                        <span className="font-semibold text-green-400">{paymentStatus}</span>
                     </div>
                     <div className="flex justify-between items-center py-2">
                         <span className="text-gray-400">결제 방법</span>
-                        <span className="font-medium text-white">신용카드</span>
+                        <span className="font-medium text-white">{paymentMethod}</span>
                     </div>
                     <div className="flex justify-between items-center py-2">
                         <span className="text-gray-400">예매일시</span>

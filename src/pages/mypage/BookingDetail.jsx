@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { userService } from '../../features/user/services/userService.js';
 import { NotificationSection } from '../../features/user/components/BookingDetail/NotificationSection.jsx';
 import { PosterSection } from '../../features/user/components/BookingDetail/PosterSection.jsx';
@@ -37,7 +36,7 @@ export default function BookingDetail() {
                 const data = await userService.getBookingDetail(bookingNumber);
                 setBookingDetail(data);
             } catch (error) {
-                console.error('예매 상세 정보 불러오는 중 오류 :', error);
+                showNotification('예매 정보를 불러오는데 실패했습니다.', NOTIFICATION_TYPE.ERROR);
             } finally {
                 setIsLoading(false);
             }
@@ -159,7 +158,7 @@ export default function BookingDetail() {
     const canDownloadTicket =
         bookingDetail.bookingStatus === BOOKING_STATUS.CONFIRMED || bookingDetail.bookingStatus === BOOKING_STATUS.COMPLETED;
 
-    if (!isLoading || !bookingDetail) {
+    if (!isLoading && bookingDetail) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
                 {/* 알림 */}
@@ -230,7 +229,12 @@ export default function BookingDetail() {
                             <SeatInfoSection seatList={bookingDetail.seatList} />
 
                             {/* 결제 정보 */}
-                            <PaymentSection bookedAt={bookingDetail.bookedAt} totalAmount={bookingDetail.totalAmount} />
+                            <PaymentSection
+                                bookedAt={bookingDetail.bookedAt}
+                                totalAmount={bookingDetail.totalAmount}
+                                paymentStatus={bookingDetail.paymentStatus}
+                                paymentMethod={bookingDetail.paymentMethod}
+                            />
 
                             {/* 액션 버튼들 */}
                             <BookingActionSection
