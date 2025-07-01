@@ -17,7 +17,8 @@ import HomePage from './pages/home/Home.jsx';
 import SellerStatusPage from './pages/admin/SellerStatus.jsx'; // 판매자 상태 페이지
 import LoginPage from './pages/auth/Login.jsx';
 import RegisterPage from './pages/auth/Register.jsx';
-import ProfilePage from './pages/Mypage/Profile.jsx';
+import ProfilePage from './pages/mypage/Profile.jsx';
+import BookingDetailPage from './pages/mypage/BookingDetail.jsx';
 
 // 콘서트 페이지
 import ConcertListPage from './pages/concert/ConcertListPage.jsx';
@@ -30,63 +31,52 @@ import NotFoundPage from './pages/NotFoundPage.jsx';
 
 // App 컴포넌트: 라우팅 정의 및 네비게이션 제공
 export default function App() {
-  const { user, loading } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext);
 
-  if (loading) {
-    return <div className="text-center py-20">로딩 중…</div>;
-  }
+    if (loading) {
+        return <div className="text-center py-20">로딩 중…</div>;
+    }
 
-  return (
-    <Routes>
-      {/** — 인증 전용 — **/}
-      <Route element={<AuthLayout />}>
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/" replace /> : <LoginPage />}
-        />
-        <Route
-          path="/register"
-          element={user ? <Navigate to="/" replace /> : <RegisterPage />}
-        />
-      </Route>
+    return (
+        <Routes>
+            {/** — 인증 전용 — **/}
+            <Route element={<AuthLayout />}>
+                <Route path="/login" element={user ? <Navigate to="/" replace /> : <LoginPage />} />
+                <Route path="/register" element={user ? <Navigate to="/" replace /> : <RegisterPage />} />
+            </Route>
 
-      {/** — 공개 페이지 — **/}
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="concerts" element={<ConcertListPage />} />
-        <Route path="concerts/:concertId" element={<ConcertDetailPage />} />
-      </Route>
+            {/** — 공개 페이지 — **/}
+            <Route element={<PublicLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="concerts" element={<ConcertListPage />} />
+                <Route path="concerts/:concertId" element={<ConcertDetailPage />} />
+            </Route>
 
-      {/** — 로그인 후 보호된 페이지 — **/}
-      <Route element={<MainLayout />}>
-        <Route
-          path="concerts/:concertId/reserve"
-          element={
-            user ? <SeatSelectionPage /> : <Navigate to="/login" replace />
-          }
-        />
-        <Route
-          path="/seller/status"
-          element={
-            user &&
-            (user.role === 'seller' ||
-              (user.roles && user.roles.includes('seller'))) ? (
-              <SellerStatusPage />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-        <Route
-          path="/mypage/profile"
-          element={
-            user ? <ProfilePage /> : <Navigate to="/login" replace />
-          }
-        />
-      </Route>
+            {/** — 로그인 후 보호된 페이지 — **/}
+            <Route element={<MainLayout />}>
+                <Route
+                    path="concerts/:concertId/reserve"
+                    element={user ? <SeatSelectionPage /> : <Navigate to="/login" replace />}
+                />
+                <Route
+                    path="/seller/status"
+                    element={
+                        user && (user.role === 'seller' || (user.roles && user.roles.includes('seller'))) ? (
+                            <SellerStatusPage />
+                        ) : (
+                            <Navigate to="/login" replace />
+                        )
+                    }
+                />
+                <Route path="/mypage/profile" element={user ? <ProfilePage /> : <Navigate to="/login" replace />} />
+                <Route
+                    path="/bookingDetail/:bookingNumber"
+                    element={user ? <BookingDetailPage /> : <Navigate to="/login" replace />}
+                />
+            </Route>
 
-      {/** — 404 처리 — **/}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  );
+            {/** — 404 처리 — **/}
+            <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+    );
 }
