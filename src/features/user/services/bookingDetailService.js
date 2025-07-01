@@ -10,6 +10,19 @@ export const BOOKING_STATUS = {
     CANCELED: 'CANCELED',
 };
 
+export const PAYMENT_STATUS = {
+    PENDING: '결제 승인 대기',
+    DONE: '결제 완료',
+    CANCELED: '결제 취소',
+    PARTIAL_CANCELED: '부분 취소',
+    FAILED: '결제 실패',
+    EXPIRED: '결제 시간 만료',
+};
+
+export const PAYMENT_METHOD = {
+    CARD: '카드',
+};
+
 export const formatDate = (dateString) => {
     if (!dateString) return '정보 없음';
 

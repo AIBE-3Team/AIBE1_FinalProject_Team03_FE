@@ -1,7 +1,16 @@
 import { CreditCard } from 'lucide-react';
-import { formatDateTime, formatPrice } from '../../services/bookingDetailService';
+import { formatDateTime, formatPrice, PAYMENT_STATUS, PAYMENT_METHOD } from '../../services/bookingDetailService';
 
 export function PaymentSection({ bookedAt, totalAmount, paymentStatus, paymentMethod }) {
+    const paymentStatusColorMap = {
+        PENDING: 'text-white',
+        DONE: 'text-green-400',
+        CANCELED: 'text-red-500',
+        PARTIAL_CANCELED: 'text-orange-500',
+        FAILED: 'text-red-500',
+        EXPIRED: 'text-gray-400',
+    };
+
     return (
         <div className="bg-gray-800 rounded-3xl p-8 shadow-lg">
             <h3 className="text-2xl font-bold mb-6 flex items-center text-white">
@@ -14,11 +23,13 @@ export function PaymentSection({ bookedAt, totalAmount, paymentStatus, paymentMe
                 <div className="md:col-span-2 space-y-4">
                     <div className="flex justify-between items-center py-2">
                         <span className="text-gray-400">결제 상태</span>
-                        <span className="font-semibold text-green-400">{paymentStatus}</span>
+                        <span className={`font-semibold ${paymentStatusColorMap[paymentStatus] || 'text-white'}`}>
+                            {PAYMENT_STATUS[paymentStatus]}
+                        </span>
                     </div>
                     <div className="flex justify-between items-center py-2">
                         <span className="text-gray-400">결제 방법</span>
-                        <span className="font-medium text-white">{paymentMethod}</span>
+                        <span className="font-medium text-white">{PAYMENT_METHOD[paymentMethod]}</span>
                     </div>
                     <div className="flex justify-between items-center py-2">
                         <span className="text-gray-400">예매일시</span>
