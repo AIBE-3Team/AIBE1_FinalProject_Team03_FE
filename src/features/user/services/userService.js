@@ -47,7 +47,7 @@ export const userService = {
 
     getBookingDetail: async (bookingNumber) => {
         try {
-            const response = await apiClient.get(`/mypage/bookingDetail/${bookingNumber}`, { params: { bookingNumber } });
+            const response = await apiClient.get(`/mypage/bookingDetail/${bookingNumber}`);
             if (response.data) {
                 return response.data;
             }

@@ -11,7 +11,11 @@ export const BOOKING_STATUS = {
 };
 
 export const formatDate = (dateString) => {
+    if (!dateString) return '정보 없음';
+
     const date = new Date(dateString);
+    if (isNaN(date)) return '정보 없음';
+
     return date.toLocaleDateString('ko-KR', {
         year: 'numeric',
         month: 'long',
@@ -22,6 +26,7 @@ export const formatDate = (dateString) => {
 
 export const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return '정보 없음';
+
     const date = new Date(dateTimeString);
     if (isNaN(date)) return '정보 없음';
 
@@ -35,11 +40,17 @@ export const formatDateTime = (dateTimeString) => {
 };
 
 export const formatPrice = (price) => {
+    if (price == null || isNaN(price)) return '0원';
+
     return new Intl.NumberFormat('ko-KR').format(price) + '원';
 };
 
 export function calculateTimeUntilConcert(concertDate, startTime) {
+    if (!concertDate || !startTime) return '정보 없음';
+
     const concertDateTime = new Date(`${concertDate}T${startTime}`);
+    if (isNaN(concertDateTime)) return '정보 없음';
+
     const now = new Date();
     const diff = concertDateTime - now;
 
@@ -53,7 +64,7 @@ export function calculateTimeUntilConcert(concertDate, startTime) {
         } else if (hours > 0) {
             return `${hours}시간 ${minutes}분 후`;
         } else {
-            return `${minutes}분 후`;
+            return minutes > 0 ? `${minutes}분 후` : '곧 시작';
         }
     } else {
         return '공연 종료';
