@@ -55,4 +55,13 @@ export const userService = {
             throw new Error(error.message || '예매 상세 내역을 불러오는 중 오류가 발생했습니다.');
         }
     },
+
+    cancelBooking: async (bookingId) => {
+        try {
+            const response = await apiClient.delete(`/mypage/bookingDetail/cancel/${bookingId}`);
+            console.log('response : ', response);
+        } catch (error) {
+            throw new Error(error.message || '예매 취소 중 오류가 발생했습니다.');
+        }
+    },
 };
