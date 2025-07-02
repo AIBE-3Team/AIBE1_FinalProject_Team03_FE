@@ -11,3 +11,17 @@ export const registerUser = async (data) => {
     };
   }
 };
+
+export const oauthRegiserUser = async () => {
+  try {
+    const response = await apiClient.get('/auth/register/social');
+    console.log('response : ', response);
+    return { success: true, data: response.data };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error.message || '소셜 로그인 유저 회원가입 중 오류가 발생했습니다.',
+    };
+  }
+};
