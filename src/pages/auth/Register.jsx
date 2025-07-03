@@ -155,7 +155,7 @@ export default function Register() {
             payload.append('profileImage', profileImage);
         }
 
-        // setIsLoading(true);
+        setIsLoading(true);
         try {
             const result = await registerUser(payload); // FormData 넘김
             if (result.success) {
@@ -165,7 +165,7 @@ export default function Register() {
             }
         } catch (error) {
             showNotification(
-                '회원가입 중 오류가 발생했습니다.',
+                error.message || '회원가입 중 오류가 발생했습니다.',
                 NOTIFICATION_TYPE.ERROR,
             );
         } finally {
