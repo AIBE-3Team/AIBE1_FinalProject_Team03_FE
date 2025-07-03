@@ -43,10 +43,13 @@ export function ProfileTab({ userInfo, onUpdateUserInfo, isLoading }) {
             updatePayload.append('nickname', editInfo.nickname);
             updatePayload.append('phone', editInfo.phone);
             updatePayload.append('address', editInfo.address);
-            if (
+
+            // 프로필 이미지 변경 검증
+            const isNewFileUploaded =
                 editInfo.profileImage instanceof File &&
-                editInfo.profileImage !== userInfo.profileImage
-            ) {
+                editInfo.profilePreview;
+
+            if (isNewFileUploaded) {
                 updatePayload.append('profileImage', editInfo.profileImage);
             }
 
@@ -154,7 +157,13 @@ export function ProfileTab({ userInfo, onUpdateUserInfo, isLoading }) {
                     </div>
                 </div>
                 <button
-                    onClick={() => setIsEditing(!isEditing)}
+                    onClick={() => {
+                        if (isEditing) {
+                            handleCancelEdit(); // 수정 취소
+                        } else {
+                            setIsEditing(true); // 수정 시작
+                        }
+                    }}
                     disabled={isSaving}
                     className="flex items-center space-x-2 px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                 >
