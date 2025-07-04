@@ -77,7 +77,6 @@ export const userService = {
             const response = await apiClient.post(
                 `/bookings/${bookingId}/cancel`,
             );
-            console.log(response);
             return response;
         } catch (error) {
             throw new Error(
