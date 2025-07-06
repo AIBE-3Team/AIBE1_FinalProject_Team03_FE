@@ -10,7 +10,6 @@ function WaitingPage() {
     const navigate = useNavigate();
     const [statusMessage, setStatusMessage] =
         useState('대기열에 접속 중입니다...');
-    const [currentRank, setCurrentRank] = useState(null);
     const [retryDelay, setRetryDelay] = useState(3500); // 초기 재시도 딜레이
     const wsRef = useRef(null);
     const pollingRef = useRef(null);
@@ -116,7 +115,6 @@ function WaitingPage() {
                                 console.log(
                                     `🔄 WebSocket에서 순위 업데이트 감지: ${msg.rank}번`,
                                 );
-                                setCurrentRank(msg.rank);
                                 setStatusMessage(
                                     `현재 대기 순번은 ${msg.rank}번 입니다.`,
                                 );
@@ -133,7 +131,7 @@ function WaitingPage() {
                             break;
 
                         default:
-                            console.log(
+                            console.warn(
                                 `알 수 없는 메시지 타입 수신: ${msg.type}`,
                             );
                     }
