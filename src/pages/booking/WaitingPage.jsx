@@ -133,7 +133,7 @@ function WaitingPage() {
                             break;
 
                         default:
-                            log.warn(
+                            console.log(
                                 `알 수 없는 메시지 타입 수신: ${msg.type}`,
                             );
                     }
