@@ -7,27 +7,21 @@ import ConcertCard from '../../features/concert/components/ConcertCard';
 
 function Home() {
     const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const [likedConcerts, setLikedConcerts] = useState(new Set());
-
+    const [searchKeyword, setsearchKeyword] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [concerts, setConcerts] = useState([]);
+
     useEffect(() => {
         async function getConcerts() {
             try {
                 setLoading(true);
                 setError(null);
 
-                console.log('🎵 콘서트 목록 조회 시작...');
-
                 const response = await concertService.getConcerts({
                     page: 0,
                     size: 4,
                 });
-
-                console.log('📦 API 응답 데이터:', response);
 
                 // 응답 데이터 구조 확인 및 처리
                 let concertData = [];
@@ -52,11 +46,8 @@ function Home() {
                     concertData = response;
                 }
 
-                console.log(`✅ 콘서트 ${concertData.length}개 로드 완료`);
                 setConcerts(concertData);
             } catch (err) {
-                console.error('❌ 콘서트 목록 조회 실패:', err);
-
                 // 에러 메시지 처리
                 let errorMessage = '콘서트 목록을 불러오지 못했습니다.';
 
@@ -78,14 +69,14 @@ function Home() {
 
     // 검색 실행 핸들러
     const handleSearch = () => {
-        if (searchQuery.trim()) {
-            navigate(`/concerts?query=${encodeURIComponent(searchQuery)}`);
-            setSearchQuery('');
+        if (searchKeyword.trim()) {
+            navigate(`/concerts?query=${encodeURIComponent(searchKeyword)}`);
+            setsearchKeyword('');
         }
     };
 
     const handleSearchInput = (e) => {
-        setSearchQuery(e.target.value);
+        setsearchKeyword(e.target.value);
     };
 
     const handleConcertClick = (concert) => {
@@ -98,10 +89,9 @@ function Home() {
             <div className="relative bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 h-80 md:h-96 flex items-center mx-4 md:mx-8 lg:mx-16 xl:mx-24 rounded-xl overflow-hidden">
                 <div className="absolute inset-0 bg-black opacity-60"></div>
                 <div
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-sm"
                     style={{
-                        backgroundImage:
-                            'url("https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800&h=600&fit=crop")',
+                        backgroundImage: 'url("/images/main.jpg")',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center center',
                     }}
@@ -128,7 +118,7 @@ function Home() {
                                     </div>
                                     <input
                                         type="text"
-                                        value={searchQuery}
+                                        value={searchKeyword}
                                         onChange={handleSearchInput}
                                         onKeyDown={(e) =>
                                             e.key === 'Enter' && handleSearch()
@@ -165,6 +155,10 @@ function Home() {
                             <div className="text-gray-300 text-lg animate-pulse">
                                 콘서트를 불러오는 중입니다...
                             </div>
+                        </div>
+                    ) : error ? (
+                        <div className="flex justify-center items-center py-20">
+                            <div className="text-red-400 text-lg">{error}</div>
                         </div>
                     ) : (
                         <div className="flex justify-center">
