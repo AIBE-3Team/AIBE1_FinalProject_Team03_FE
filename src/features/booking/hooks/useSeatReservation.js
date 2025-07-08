@@ -52,7 +52,7 @@ export const useSeatReservation = (concertId) => {
         if (timer <= 0) {
             if (selectedSeatsRef.current.length > 0) {
                 alert('선점 시간이 만료되었습니다.');
-                handleClearSelection();
+                handleClearSelection().catch(console.error);
             }
             return;
         }
@@ -65,7 +65,7 @@ export const useSeatReservation = (concertId) => {
         return () => {
             if (selectedSeatsRef.current.length > 0) {
                 selectedSeatsRef.current.forEach((seat) => {
-                    releaseSeat(concertId, seat.seatId);
+                    releaseSeat(concertId, seat.seatId).catch(console.error);
                 });
             }
         };
@@ -120,7 +120,8 @@ export const useSeatReservation = (concertId) => {
     const handleRemoveSeat = useCallback(
         (seatId) => {
             const seatToRemove = selectedSeats.find((s) => s.seatId === seatId);
-            if (seatToRemove) handleSeatClick(seatToRemove);
+            if (seatToRemove)
+                handleSeatClick(seatToRemove).catch(console.error);
         },
         [selectedSeats, handleSeatClick],
     );
