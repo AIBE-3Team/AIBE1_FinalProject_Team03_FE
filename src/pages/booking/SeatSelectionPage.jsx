@@ -16,14 +16,12 @@ export default function SeatSelectionPage() {
     const [concertInfo, setConcertInfo] = useState(null);
     const [pageLoading, setPageLoading] = useState(true);
     const [pageError, setPageError] = useState(null);
-    const [bookingError, setBookingError] = useState(null);
     const { proceedToPayment, isProcessing, paymentError } = usePayment();
 
     // 1. 훅을 호출하여 좌석 관련 모든 상태와 함수를 가져옵니다.
     const {
         seatStatuses,
         selectedSeats,
-        isReserving,
         error: reservationError, // 페이지 에러와 구분하기 위해 이름 변경
         timer,
         refreshSeatStatuses,

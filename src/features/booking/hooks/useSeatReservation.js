@@ -98,7 +98,7 @@ export const useSeatReservation = (concertId) => {
                 setIsReserving(false);
             }
         },
-        [concertId, selectedSeats, isReserving, refreshSeatStatuses],
+        [concertId, selectedSeats, refreshSeatStatuses],
     );
 
     const handleClearSelection = useCallback(async () => {
@@ -115,7 +115,7 @@ export const useSeatReservation = (concertId) => {
         } finally {
             setIsReserving(false);
         }
-    }, [concertId, selectedSeats, isReserving, refreshSeatStatuses]);
+    }, [concertId, selectedSeats, refreshSeatStatuses]);
 
     const handleRemoveSeat = useCallback(
         (seatId) => {

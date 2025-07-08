@@ -11,7 +11,7 @@ export const usePayment = () => {
     const proceedToPayment = async (concertId, selectedSeats) => {
         if (selectedSeats.length === 0) {
             setPaymentError('좌석을 먼저 선택해주세요.');
-            return;
+            throw new Error('좌석을 먼저 선택해주세요.');
         }
 
         setIsProcessing(true);
